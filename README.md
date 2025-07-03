@@ -3,7 +3,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 
-## Setup .env file:
+### Setup .env file:
 
 REACT_APP_API=https://your-backend-url.onrender.com/graphql
 

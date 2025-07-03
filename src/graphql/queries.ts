@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_CONTACTS = gql`
-  query GetContacts($search: String) {
-    getContacts(search: $search) {
+  query GetContacts {
+    getContacts {
       id
       name
       email

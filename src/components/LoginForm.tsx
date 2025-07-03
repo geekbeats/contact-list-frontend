@@ -1,46 +1,47 @@
-import React, { JSX, useState } from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { SIGNUP } from '../graphql/mutations';
+import { LOGIN } from '../graphql/mutations';
 import { useSetAtom } from 'jotai';
 import { tokenAtom } from '../atoms';
 import { useNavigate } from 'react-router-dom';
+import { JSX } from 'react/jsx-runtime';
 
-export default function SignupForm(): JSX.Element {
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const [signup] = useMutation(SIGNUP);
+export default function LoginForm(): JSX.Element {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [login] = useMutation(LOGIN);
   const setToken = useSetAtom(tokenAtom);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data } = await signup({ variables: form });
-    if (data?.signup?.token) {
-      localStorage.setItem('token', data.signup.token);
-      setToken(data.signup.token);
-      navigate('/contacts');
+    try {
+      const { data } = await login({ variables: { email, password } });
+      if (data?.login?.token) {
+        localStorage.setItem('token', data.login.token);
+        setToken(data.login.token);
+        navigate('/contacts');
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Login failed';
+      alert(message);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        placeholder="Name"
-        value={form.name}
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
-        required
-      />
+    <form onSubmit={handleLogin}>
       <input
         type="email"
         placeholder="Email"
-        value={form.email}
-        onChange={(e) => setForm({ ...form, email: e.target.value })}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         required
       />
       <input
         type="password"
         placeholder="Password"
-        value={form.password}
-        onChange={(e) => setForm({ ...form, password: e.target.value })}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         required
       />
       <button type="submit">Log In</button>

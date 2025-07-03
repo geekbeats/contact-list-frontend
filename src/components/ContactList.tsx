@@ -15,10 +15,6 @@ export default function ContactList(): JSX.Element {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error fetching contacts.</p>;
-  if (error) {
-  console.error('GraphQL error:', error);
-  return <p>Error fetching contact.</p>;
-}
 
   return (
     <ul>

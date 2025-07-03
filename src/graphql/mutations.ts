@@ -43,3 +43,4 @@ export const DELETE_CONTACT = gql`
     deleteContact(id: $id)
   }
 `;
+
